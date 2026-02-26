@@ -4,7 +4,7 @@ A comprehensive data visualization solution developed for advanced coursework at
 
 **Course:** Data Visualization Lab  
 **Professors:** Prof. Monica Moroni, Prof. Shahryar Noei  
-**Authors:** Davide Donà, 
+**Authors:** Davide Donà, Andrea Blushi, Lorenzo Di Berardino
 
 ---
 
