@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Dict, List
 
-from backend.models.ride import MemberCasual, RideableType
+from models.ride import MemberCasual, RideableType
 
 class RideTypeStats(BaseModel):
     """Statistics grouped by rideable type"""

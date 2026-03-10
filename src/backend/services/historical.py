@@ -1,5 +1,6 @@
 import pandas as pd
 from pathlib import Path
+from math import radians, cos, sin, asin, sqrt
 
 """
     TODO: check for other possible data cleaning steps / feature extraction.
@@ -58,4 +59,33 @@ def _clean_data(df: pd.DataFrame) -> pd.DataFrame:
     df['trip_duration'] = (df['ended_at'] - df['started_at']).dt.total_seconds()
     df = df[df['trip_duration'] > 0]
 
+    # Create a trip distance column using the Haversine formula
+    """
+    TODO: check if this is really useful for the analysis, as it might be computationally expensive
+    
+    Another approach could be to compute it based on the average speed of new yorker cyclists, which is around 15 km/h, and the trip duration.
+    This would be a rough estimate, but it might be sufficient for the analysis and much faster to compute.
+    """
+    df['trip_distance'] = df.apply(lambda row: _haversine_distance(row['start_lat'], row['start_lng'], row['end_lat'], row['end_lng']), axis=1)
+
     return df
+
+
+def _haversine_distance(lat1, lon1, lat2, lon2):
+    """
+    Calculate the Haversine distance between two points on the Earth specified in decimal degrees.
+    Returns distance in kilometers.
+    """
+    # Convert decimal degrees to radians
+    lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])
+
+    # delta of latitude coordinates
+    d_lon = lon2 - lon1 
+    # delta of longitude coordinates
+    d_lat = lat2 - lat1 
+    
+    # Haversine formula
+    a = sin(d_lat/2)**2 + cos(lat1) * cos(lat2) * sin(d_lon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    R = 6371  # Radius of Earth in kilometers
+    return c * R

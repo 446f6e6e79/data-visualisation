@@ -1,4 +1,4 @@
-from turtle import pd
+import pandas as pd
 from datetime import datetime
 
 from fastapi import APIRouter, HTTPException
