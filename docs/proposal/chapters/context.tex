@@ -1,58 +1,87 @@
 \section{Context}
 
 \subsection{Curiosity Origin}
-As travelers, we are often curious about how people move through large cities.
+As frequent travelers, we are often curious about how people move through large cities.
 In particular, we wanted to understand mobility patterns, the choices people make when navigating urban spaces, and the factors that shape those choices.
-\\
+
 This curiosity led us to explore data sources that could provide meaningful insights into urban movement.
-Among them, New York City's bike rental data stood out as a rich source of information on how people travel across the city.
+Among them, New York City's bike rental data stood out as a rich source of information on how people travel across the city using a sustainable mode of transportation.
 When combined with other datasets, it can offer a clearer picture of the city's daily dynamics.
-\\
-We also learned that this bike rental data is provided by a private company (nome) that operates the bike-sharing service in New York City.
+
+We also learned that this bike rental data is provided by a private company (\texttt{Citi Bike}) that operates the bike-sharing service in New York City.
 For this reason, making our analysis useful and relevant to the company is an effective way to increase its practical impact.
 
 \subsection{Problem Statement}
-In this context we defined the following requirements and restrictions:
+\texttt{Citi Bike} currently collects vast amounts of operational data. 
+If effectively analyzed and visualized, this data could provide valuable insights to optimize their services and enhance user experience.
+In particular, the company could:
+\begin{itemize}
+  \item Optimize bike station placement and rebalancing strategies based on demand patterns
+  \item Identify peak usage times and seasonal trends for pricing and maintenance planning
+  \item Understand user behavior differences (members vs. casual riders) to tailor services
+\end{itemize}
+
+Similarly, city planners lack accessible data on urban mobility to inform infrastructure decisions, and the public has limited awareness of sustainable transportation alternatives.
+
+Our visualization tool directly addresses these gaps by making complex mobility data accessible and actionable.
 
 \subsubsection*{Target Audience}
-Our project is mainly designed for the bike rental company, as they can use the insights from our analysis to optimize their services and improve customer satisfaction.
-From a business perspective, understanding mobility patterns can help the company make informed decisions about bike placement, pricing strategies, and marketing campaigns.
-\\
-However, the findings can also be valuable for city planners and the general public.
-For city planners, the insights can inform infrastructure development and urban planning decisions.
-For the general public, the visualizations can raise awareness about mobility patterns and encourage more sustainable and efficient transportation choices.
+Our project is primarily designed for the \texttt{Citi Bike} operations team, enabling them to make data-driven decisions about resource allocation and service optimization.
+Although, we intend to also target secondary audiences, such as:
+\begin{itemize}
+  \item \textbf{City planners} -- informing infrastructure and urban planning decisions;
+  \item \textbf{The general public} -- raising awareness of mobility patterns and promoting sustainable transportation.
+\end{itemize}
 
 \subsubsection*{Constraints}
 %#TODO  Pressure: how much time do you have and what milestones along the realisation path?
 %       rules: layout/size restrictions, style guidelines, functional restrictions
 
 \subsubsection*{Deliverables and Consumption}
-To support the easy and effective consumption of our insights, we chose to develop an interactive dashboard.
-This allows all types of users to explore the data and insights in a user-friendly and immediate way.
-In this way, we can present a wide range of visualizations and insights in a compact format, making the analysis easier to filter and explore.
-\\
+We deliver an interactive web-based dashboard as the primary output.
+This allows all users to explore mobility patterns through a unified, user-friendly interface where they can:
+\begin{itemize}
+  \item Filter data by time period, bike type, and user category
+  \item View station-level performance metrics and demand hotspots
+  \item Discover patterns independently without predefined narratives
+\end{itemize}
+This exploratory approach empowers users to extract insights relevant to their specific interests and expertise.
+
 Regarding update frequency, we expect the dashboard to be refreshed automatically on a regular basis, since the data are continuously collected.
 This ensures that the insights remain useful and relevant over time, while also enabling historical analysis and comparisons across different periods.
-\\
+
 Our design approach is to present clear, immediate insights at first impactful while also allowing deeper exploration for users who want to examine the details.
 
 \subsubsection*{Resources}
 Since we are working with a large dataset and aim to create an interactive dashboard, we need programming skills and experience with data and visualization tools.
-\\
-We expect to use Python for data retrieval, cleaning, and analysis, and JavaScript (with libraries such as D3.js) for interactive visualizations in the dashboard.
-This choice is motivated by the fact that Python is a powerful and widely used language for data analysis, while JavaScript is essential for creating interactive web-based visualizations.
+
+Our tech stack combines:
+\begin{itemize}
+  \item \textbf{Backend (Python)} -- efficient data processing, cleaning, and REST API development via FastAPI;
+  \item \textbf{Frontend (JavaScript/D3.js)} -- custom, interactive visualizations tailored to mobility pattern analysis.
+\end{itemize}
+This modular architecture enables rapid iteration during development while remaining scalable as data volumes grow.
 
 \subsection{Purpose, Vision and Tone}
-Our objective is to help users understand mobility patterns in New York City in a clear and informative way.
-\\
-We aim to provide an \textbf{exploratory} tool that allows users to interactively discover insights and patterns in the data.
-Users should be able to highlight and filter categories on their own.
-\\
-This result is particularly suitable for the bike rental company, since they have domain knowledge of both the business and the data.
-By providing them with this tool, they can extract insights that are relevant to their operations and make informed decisions based on the data.
-\\
-However, we also aim to give the general public the opportunity to explore the data by making the insights accessible and understandable to a wider audience.
-This can help raise awareness of mobility patterns and encourage more sustainable transportation choices.
-\\\\
-The tone we want should be clear and easy to follow, with slight engagement to maintain user interest in exploring the data and insights.
-At the same time, the data should remain the main focus, so we aim to avoid distracting or manipulative presentation choices.
+%TODO: Most of this section is redundant with previos ones
+
+\subsubsection*{Purpose}
+Our primary objective is to transform raw \texttt{Citi Bike} operational data into clear, actionable insights for stakeholders.
+Specifically, we aim to reveal:\begin{itemize}
+  \item \textbf{Temporal patterns} -- peak usage hours, seasonal trends, and demand cyclicity
+  \item \textbf{Spatial hotspots} -- high-demand stations, commute corridors, and underutilized infrastructure
+  \item \textbf{User segmentation} -- behavioral differences between members and casual riders
+\end{itemize}
+
+\subsubsection*{Vision}
+We envision an interactive dashboard where diverse stakeholders can rapidly gain insights:
+\begin{itemize}
+  \item \textbf{Citi Bike operations} -- quickly identify optimization opportunities for station placement and bike rebalancing
+  \item \textbf{City planners} -- understand commute flows and modal patterns to inform infrastructure investment
+  \item \textbf{General public} -- develop awareness of urban mobility and sustainable transportation alternatives
+\end{itemize}
+
+\subsubsection*{Design Philosophy}
+Our visualization prioritizes clarity and analytical depth over visual polish.
+We employ a dual-level approach: high-level dashboards present immediate summary insights (e.g., daily ridership totals, top stations), while detailed views enable granular exploration (e.g., hourly breakdowns, user type comparisons).
+All design choices remain data-centric, avoiding decorative elements or misleading visual encodings that could obscure underlying patterns.

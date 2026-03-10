@@ -1,12 +1,13 @@
 \section{Dataset}
+%#TODO: maybe i would shorten the structure of the dataset section (second deliverable)
 The dataset we are working with is the \href{https://citibikenyc.com/system-data}{Citi Bike System Data}, which contains information about bike rentals in New York City.
-\\
+
 The data are provided by the private company \textit{Lyft}, which operates the bike-sharing service in the city.
 The company regularly publishes the trip records as open data, making them accessible to the public.
-\\\\
+
 All data are updated on a monthly basis and distributed as structured CSV files, accessible also through API calls.
 Since the company keeps track until the 2013, we have not only short-term data but also an historical record of them.
-\\
+
 Each trip record contains several attributes describing the rental, such as:
 \begin{itemize}
     \item Rental start and end times
@@ -19,10 +20,10 @@ Those attributes allow us to analyze various aspects of bike rentals, such as te
 \subsection{Weather Data}
 Since weather conditions can influence mobility patterns, we also plan to integrate weather data into our analysis.
 This is possible through the use of APIs of \href{https://openmeteo.com/}{OpenWeatherMap}, which can provide historical weather data for New York City, combining it with the bike rental data.
-\\
+
 This integration has data until 2013, so we can analyze the influence of weather conditions on bike rentals over all the dataset.
 Then it's open source, with only an API request limit, so we can easily retrieve the data we need for our analysis.
-\\
+
 The data are provided with an hourly granurality, and permits to get the weather conditions for each longitude and latitude, so we can also analyze the influence of weather conditions with more precision.
 The API provides a lot of different weather attributes, but we are only interested in:
 \begin{itemize}
