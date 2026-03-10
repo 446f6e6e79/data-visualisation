@@ -1,22 +1,37 @@
 \section{Dataset}
 The dataset we are working with is the \href{https://citibikenyc.com/system-data}{Citi Bike System Data}, which contains information about bike rentals in New York City.
+\\
 The data are provided by the private company \textit{Lyft}, which operates the bike-sharing service in the city.
+The company regularly publishes the trip records as open data, making them accessible to the public.
+\\\\
+All data are updated on a monthly basis and distributed as structured CSV files, accessible also through API calls.
+Since the company keeps track until the 2013, we have not only short-term data but also an historical record of them.
 \\
-All data are collected and made open source by the company, updated on a monthly basis, and made available through an API.
-This means that we have access to a continuous stream of data, which allows us to analyze trends and patterns over time.
-\\
-The dataset contains information such as:
+Each trip record contains several attributes describing the rental, such as:
 \begin{itemize}
     \item Rental start and end times
     \item Rental start and end stations
-    \item User type (e.g., subscriber or customer)
+    \item User type (e.g., member or casual ride)
+    \item Rideable Type
 \end{itemize}
-The data are available for the last 10 years, and they are provided in a structured format (CSV files), which makes them easier to process and analyze.
+Those attributes allow us to analyze various aspects of bike rentals, such as temporal patterns and spatial distribution.
 
-\subsection{Other Datasets}
-Since weather is a factor that can influence mobility patterns, we also plan to integrate weather data into our analysis.
-This is possible through the use of APIs of \href{https://openweathermap.org/api}{OpenWeatherMap}, which can provide historical weather data for New York City.
-By combining the bike rental data with weather data, we can gain a deeper understanding of how weather conditions affect mobility patterns and bike usage in the city.
-\\\\
+\subsection{Weather Data}
+Since weather conditions can influence mobility patterns, we also plan to integrate weather data into our analysis.
+This is possible through the use of APIs of \href{https://openmeteo.com/}{OpenWeatherMap}, which can provide historical weather data for New York City, combining it with the bike rental data.
+\\
+This integration has data until 2013, so we can analyze the influence of weather conditions on bike rentals over all the dataset.
+Then it's open source, with only an API request limit, so we can easily retrieve the data we need for our analysis.
+\\
+The data are provided with an hourly granurality, and permits to get the weather conditions for each longitude and latitude, so we can also analyze the influence of weather conditions with more precision.
+The API provides a lot of different weather attributes, but we are only interested in:
+\begin{itemize}
+    \item Temperature
+    \item Precipitation
+    \item Wind Speed
+    \item Humidity
+\end{itemize}
+
+\subsection{New York City Datasets}
 We also take into consideration \href{https://www.nyc.gov/html/dot/html/about/datafeeds.shtml\#Bikes}{NYC Bicycling Data}, which can provide additional information such as bike lane locations, traffic data, and other relevant context that can help us understand bike rentals and mobility patterns in New York City.
 We can also consider other datasets that provide information about the city's infrastructure, such as public transportation data, to gain a more comprehensive understanding of mobility patterns.
