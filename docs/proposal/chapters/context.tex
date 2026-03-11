@@ -16,27 +16,26 @@ For this reason, making our analysis useful and relevant to the company is an ef
 If effectively analyzed and visualized, this data could provide valuable insights to optimize their services and enhance user experience.
 
 Our visualization tool directly addresses these gaps by making complex mobility data accessible and actionable.
-Our primary objective is to transform raw \texttt{Citi Bike} operational data into clear, actionable insights for stakeholders.
-%#TODO: unify with the target audience section
-Specifically, we aim to reveal:\begin{itemize}
-  \item \textbf{Temporal patterns} -- peak usage hours, seasonal trends, and demand cyclicity
+
+The primary objective is to transform raw \texttt{Citi Bike} operational data into clear, actionable insights for stakeholders.
+
+\subsubsection{Citi Bike Operations Team}
+Specifically, we aim to reveal:
+\begin{enumerate}
+  \item \textbf{Temporal patterns} -- peak usage hours, seasonal trends, and demand cyclicity.
   \item \textbf{Spatial hotspots} -- high-demand stations, commute corridors, and underutilized infrastructure
   \item \textbf{User segmentation} -- behavioral differences between members and casual riders
-\end{itemize}
+\end{enumerate}
+The first two insights can help the operations team optimize station placement and bike rebalancing.
+Meanwhile, the third can inform targeted marketing strategies and service improvements to better meet user needs.
 
-\subsubsection*{Target Audience}
-Our project is primarily designed for the \texttt{Citi Bike} operations team.
-Although, we intend to also target secondary audiences, such as city planners and the general public.
+\subsubsection{City Planners and General Public}
+Beyond the operations team, our visualization can also benefit city planners by providing insights into commute flows and modal patterns, which can inform infrastructure investment and urban planning decisions.
+For the general public, it can raise awareness of urban mobility and sustainable transportation alternatives, fostering a more informed and engaged community.
 
-The idea is to create a tool that provides for each of these audiences the following benefits:
-\begin{itemize}
-  \item \textbf{Citi Bike operations} -- quickly identify optimization opportunities for station placement and bike rebalancing.
-  This allows them to do data-driven decisions to improve the efficiency of their service, such as optimizing bike distribution across stations or identifying underperforming locations.
-  \item \textbf{City planners} -- understand commute flows and modal patterns to inform infrastructure investment and urban planning decisions.
-  \item \textbf{General public} -- develop awareness of urban mobility and sustainable transportation alternatives
-\end{itemize}
+\subsection{Deliverables}
 
-\subsubsection*{Deliverables Vision}
+\subsubsection{Vision}
 We deliver an interactive web-based dashboard as the primary output.
 This allows all users to explore mobility patterns through a unified, user-friendly interface.
 Our design approach is to present clear, immediate insights at first impactful while also allowing deeper exploration for users who want to examine the details.
@@ -44,12 +43,12 @@ Our design approach is to present clear, immediate insights at first impactful w
 Regarding update frequency, we expect the dashboard to be refreshed automatically on a regular basis, since the data are continuously collected.
 This ensures that the insights remain useful and relevant over time, while also enabling historical analysis and comparisons across different periods.
 
-\subsubsection*{Design Philosophy}
+\subsubsection{Design Philosophy}
 Our visualization prioritizes clarity and analytical depth over visual polish.
 We employ a dual-level approach: high-level dashboards present immediate summary insights (e.g., daily ridership totals, top stations), while detailed views enable granular exploration (e.g., hourly breakdowns, user type comparisons).
 All design choices remain data-centric, avoiding decorative elements or misleading visual encodings that could obscure underlying patterns.
 
-\subsubsection*{Resources}
+\subsubsection{Resources}
 Since we are working with a large dataset and aim to create an interactive dashboard, we need programming skills and experience with data and visualization tools.
 
 Our tech stack combines:
@@ -59,7 +58,7 @@ Our tech stack combines:
 \end{itemize}
 This modular architecture enables rapid iteration during development while remaining scalable as data volumes grow.
 
-\subsubsection*{Constraints} %#TODO: check and fix this section
+\subsubsection{Constraints} %#TODO: check and fix this section
 The project is constrained by time, data quality, and implementation limits.
 Since the final deliverable is due in June, we must keep the feature scope focused on the analyses with the highest practical value.
 
