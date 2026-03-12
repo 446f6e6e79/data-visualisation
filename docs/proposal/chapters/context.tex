@@ -23,9 +23,9 @@ The primary objective is to transform raw \texttt{Citi Bike} operational data in
 \subsubsection{Citi Bike Operations Team}
 Specifically, we aim to reveal:
 \begin{enumerate}
-  \item \textbf{Temporal patterns} -- peak usage hours, seasonal trends, and demand cyclicity.
-  \item \textbf{Spatial hotspots} -- high-demand stations, commute corridors, and underutilized infrastructure
-  \item \textbf{User segmentation} -- behavioral differences between members and casual riders
+  \item \textbf{Temporal patterns}---peak usage hours, seasonal trends, and demand cyclicity.
+  \item \textbf{Spatial hotspots}---high-demand stations, commute corridors, and underutilized infrastructure
+  \item \textbf{User segmentation}---behavioral differences between members and casual riders
 \end{enumerate}
 The first two insights can help the operations team optimize station placement and bike rebalancing.
 Meanwhile, the third can inform targeted marketing strategies and service improvements to better meet user needs.
@@ -53,16 +53,15 @@ All design choices remain data-centric, avoiding decorative elements or misleadi
 Since we are working with a large dataset and aim to create an interactive dashboard, we need programming skills and experience with data and visualization tools.
 
 Our tech stack combines:
-\begin{itemize}
+\begin{itemize}[beginpenalty=10000]
   \item \textbf{Backend (Python)} -- efficient data processing, cleaning, and REST API development via FastAPI;
   \item \textbf{Frontend (JavaScript/D3.js)} -- custom, interactive visualizations tailored to mobility pattern analysis.
 \end{itemize}
 This modular architecture enables rapid iteration during development while remaining scalable as data volumes grow.
 
-\subsubsection{Constraints} %#TODO: check and fix this section
-The project is constrained by time, data quality, and implementation limits.
-Since the final deliverable is due in June, we must keep the feature scope focused on the analyses with the highest practical value.
+\subsubsection{Constraints}
+In general, trying to obtain the most value from the data while respecting project constraints is a key challenge. The project must balance the ambition of performing meaningful analyses with practical limitations such as time availability, data quality, and implementation complexity. Since the final deliverable is scheduled for June, it is necessary to keep the feature scope focused and prioritize analyses that can provide the most relevant and actionable insights.
 
-At the same time, historical \texttt{Citi Bike} records may include missing values and format differences across years, which makes preprocessing an essential step before analysis.
-In addition, the dataset size requires efficient aggregation and filtering strategies to ensure that the dashboard remains responsive.
+Another important aspect concerns the quality and consistency of the available data. Historical \texttt{Citi Bike} records were collected over multiple years, and they may contain missing values, inconsistencies, or differences in formatting and schema across datasets. For this reason, a careful preprocessing phase is required to clean, standardize, and integrate the data before any reliable analysis can be performed.
 
+Finally, the large size of the dataset introduces additional technical challenges. Efficient aggregation, filtering, and data handling strategies must be implemented to manage the volume of information effectively. These optimizations are particularly important to ensure that the dashboard remains responsive and interactive, allowing users to explore the data smoothly without performance issues.
