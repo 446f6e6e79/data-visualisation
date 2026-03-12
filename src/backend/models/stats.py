@@ -2,16 +2,25 @@ from pydantic import BaseModel
 
 from models.ride import MemberCasual, RideableType
 
+class Stats(BaseModel):
+    """Base class for statistics models."""
+    total_rides: int
+    average_duration_seconds: float
+    average_distance_km: float
+    total_duration_seconds: float
+    total_distance_km: float
+    
 class RideTypeStats(BaseModel):
     """Statistics grouped by rideable type"""
     rideable_type: RideableType
-    total_rides: int
-    average_duration_minutes: float
-    total_distance_km: float
+    stats : Stats
 
 class UserTypeStats(BaseModel):
     """Statistics grouped by user type"""
     user_type: MemberCasual
-    total_rides: int
-    average_duration_minutes: float
-    average_distance_km: float
+    stats : Stats
+
+class DailyStats(BaseModel):
+    """Daily statistics."""
+    day_of_week: str
+    stats : Stats

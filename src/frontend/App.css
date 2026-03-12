@@ -93,3 +93,41 @@
   font-size: 1.6rem;
   font-weight: 700;
 }
+
+.daily-chart-panel {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.daily-chart-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-axis {
+  stroke: #888;
+  stroke-width: 1;
+}
+
+.daily-bar {
+  fill: #1a73e8;
+}
+
+.chart-tick {
+  fill: #666;
+  font-size: 0.8rem;
+}
+
+.chart-value {
+  fill: #333;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.chart-y-label {
+  fill: #666;
+  font-size: 0.8rem;
+}

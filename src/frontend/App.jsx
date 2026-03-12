@@ -3,10 +3,11 @@ import './App.css'
 import AppHeader from './components/AppHeader.jsx'
 import StatsSection from './components/StatsSection.jsx'
 import StatusMessage from './components/StatusMessage.jsx'
+import DailyStatsBarChart from './components/DailyStatsBarChart.jsx'
 import useStatsData from './hooks/useStatsData.js'
 
 function App() {
-  const { rideStats, userStats, loading, error } = useStatsData()
+  const { rideStats, userStats, dailyStats, loading, error } = useStatsData()
 
   const rideMetrics = [
     { label: 'Total Rides', key: 'total_rides', formatter: value => value.toLocaleString() },
@@ -45,6 +46,8 @@ function App() {
               itemTitle={item => item.user_type}
               metrics={userMetrics}
             />
+
+            <DailyStatsBarChart items={dailyStats} />
           </>
         )}
       </div>

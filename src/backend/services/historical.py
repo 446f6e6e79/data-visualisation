@@ -52,8 +52,13 @@ def _clean_data(df: pd.DataFrame) -> pd.DataFrame:
     # Extract year, month, day of week, and hour from the start time
     df['start_year'] = df['started_at'].dt.year
     df['start_month'] = df['started_at'].dt.month
-    df['start_day_of_week'] = df['started_at'].dt.dayofweek
+    df['start_day_of_week'] = df['started_at'].dt.day_name()
     df['start_hour'] = df['started_at'].dt.hour
+    
+    # Create a new column for weekday/weekend
+    df["day_type"] = df["start_day_of_week"].apply(
+        lambda x: "Weekday" if x in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] else "Weekend"
+    )
     
     # Create a trip duration column in seconds and filter out trips with non-positive duration
     df['trip_duration'] = (df['ended_at'] - df['started_at']).dt.total_seconds()
