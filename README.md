@@ -52,3 +52,17 @@ Go to [src/backend/README.md](src/backend/README.md) for detailed instructions o
 The frontend application implementation for the bike-sharing data visualization project is located in the `src/frontend`.
 Go to [src/frontend/README.md](src/frontend/README.md) for detailed instructions on how to start the frontend application and access the user interface.
 
+## Downloading the datasets
+The datasets needed for the project can be downloaded from the Citi Bike Trip Data page at https://s3.amazonaws.com/tripdata/index.html
+
+To make the process easier, we provided a Python script that automates the downloading and merging of the trip data files based on specified date ranges. The script is located in `scripts/download_and_merge_tripdata.py`.
+
+To use the script, run the following command in your terminal:
+
+```bash
+python scripts/download_and_merge_tripdata.py
+```
+The available options for the script are:
+- `--start-date`: The start date for filtering files (in YYYYMM format). Default is "202601".
+- `--end-date`: The end date for filtering files (in YYYYMM format). Default is "" (no end date).
+- `--download-jc`: Include files from the Jersey City dataset (those starting with "JC-"). By default, these files are excluded.
