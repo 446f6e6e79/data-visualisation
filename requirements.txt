@@ -86,6 +86,7 @@ pydantic==2.12.5
 pydantic_core==2.41.5
 Pygments==2.19.2
 pyparsing==3.3.2
+pytest==8.4.2
 python-dateutil==2.9.0.post0
 python-json-logger==4.0.0
 PyYAML==6.0.3

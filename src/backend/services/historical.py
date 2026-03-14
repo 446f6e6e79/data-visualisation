@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from pathlib import Path
 from math import radians, cos, sin, asin, sqrt
 
@@ -7,9 +8,32 @@ from math import radians, cos, sin, asin, sqrt
     E.g., check if it is possible to extract the length of the trip from the start and end station coordinates
 """
 _df: pd.DataFrame | None = None
-DATA_DIR = "../../data/"
 
-def load_historical_data() -> pd.DataFrame:
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+BACKEND_ROOT = Path(__file__).resolve().parents[1]
+
+DATA_DIR = PROJECT_ROOT / "data"
+TEST_DATA_DIR = BACKEND_ROOT / "tests" / "test_data"
+
+# Environment variable name for configuring the historical data directory
+DATA_DIR_ENV_VAR = "HISTORICAL_DATA_DIR"
+
+
+def _resolve_data_path(test: bool = False) -> Path:
+    """
+    Resolve the path to the historical data directory based on the following precedence:
+    1. If the environment variable `HISTORICAL_DATA_DIR` is set, use that path
+    2. If the `test` flag is True, use the test data directory
+    3. Otherwise, use the default data directory
+    """
+    configured_data_dir = os.getenv(DATA_DIR_ENV_VAR)
+    if configured_data_dir:
+        return Path(configured_data_dir).expanduser()
+    if test:
+        return TEST_DATA_DIR
+    return DATA_DIR
+
+def load_historical_data(test=False) -> pd.DataFrame:
     """
     Load all historical CitiBike trip CSV files from the given directory into
     a single DataFrame. The result is cached in memory after the first call using
@@ -20,10 +44,13 @@ def load_historical_data() -> pd.DataFrame:
         return _df
 
     print("Loading historical data...")
-    csv_files = list(Path(DATA_DIR).glob("*.csv"))
+    # Get the data path based on the environment variable or default location
+    data_path = _resolve_data_path(test=test)
+    csv_files = list(data_path.glob("*.csv"))
     if not csv_files:
-        raise FileNotFoundError(f"No CSV files found in {DATA_DIR!r}")
+        raise FileNotFoundError(f"No CSV files found in {data_path!r}")
 
+    # Read all CSV files and concatenate them into a single DataFrame
     dfs = [pd.read_csv(file) for file in csv_files]
     _df = pd.concat(dfs, ignore_index=True)
     print(f"Loaded {len(_df)} records from {len(csv_files)} files.")

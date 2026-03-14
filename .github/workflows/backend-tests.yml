@@ -1,0 +1,62 @@
+name: Backend Tests
+
+on:
+  push:
+    # Only run this workflow when changes are pushed to the main branch, if changes are made to files in the src/backend directory
+    branches:
+      - main
+    paths:
+      - "src/backend/**"
+      - "requirements.txt"
+      - ".github/workflows/backend-tests.yml"
+  pull_request:
+    # Run on pull requests targeting the main branch, with the same path filters
+    branches:
+      - main
+    paths:
+      - "src/backend/**"
+      - "requirements.txt"
+      - ".github/workflows/backend-tests.yml"
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run backend integration tests
+        env:
+          HISTORICAL_DATA_DIR: tests/test_data
+        run: |
+          cd src/backend
+          python -m uvicorn main:app --host 127.0.0.1 --port 8000 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID' EXIT
+
+          python - <<'PY'
+          import time
+          import urllib.request
+
+          for _ in range(30):
+              try:
+                  with urllib.request.urlopen("http://127.0.0.1:8000/docs", timeout=2):
+                      break
+              except Exception:
+                  time.sleep(1)
+          else:
+              raise SystemExit("Backend server did not become ready in time.")
+          PY
+
+          pytest tests/test_backend.py -q
