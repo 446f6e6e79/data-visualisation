@@ -11,7 +11,7 @@ It offers endpoints to retrieve real-time and historical data about bike station
    ```
 2. **Install the required dependencies:**
    ```bash
-   pip install -r ../../requirements.txt
+   pip install -r requirements.txt
    ```
 3. **Navigate to the backend directory:**
    ```bash
@@ -31,7 +31,6 @@ This will launch the FastAPI server with hot-reloading enabled, allowing you to 
 Run the backend integration tests against the committed mock dataset:
 
 ```bash
-cd src/backend
 export HISTORICAL_DATA_DIR=tests/test_data
 uvicorn main:app --host 127.0.0.1 --port 8000
 ```
@@ -39,7 +38,7 @@ uvicorn main:app --host 127.0.0.1 --port 8000
 In a second terminal, run:
 
 ```bash
-pytest src/backend/tests/test_backend.py -q
+pytest /tests/test_backend.py -q
 ```
 
 ## API Documentation
@@ -53,7 +52,7 @@ This interactive documentation provides details about the available endpoints, r
 ```src/backend/
 ├── main.py                       # Main application entry point
 ├── models/                       # Contains the model definitions for API responses
-│
+├── tests/                        # Contains integration tests for the backend
 ├── services/                     # Contains the logic for data retrieval and processing
 ├── routes/                       # Contains the API route definitions
 ```
