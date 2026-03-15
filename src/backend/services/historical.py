@@ -1,13 +1,19 @@
 import pandas as pd
 import os
+import requests
+from datetime import datetime
 from pathlib import Path
 from math import radians, cos, sin, asin, sqrt
+
+from models.ride import Weather
 
 """
     TODO: check for other possible data cleaning steps / feature extraction.
     E.g., check if it is possible to extract the length of the trip from the start and end station coordinates
 """
 _df: pd.DataFrame | None = None
+_weather_by_hour: dict[str, dict] | None = None
+_weather_range: tuple[str, str] | None = None
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 BACKEND_ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +25,10 @@ TEST_DATA_DIR = BACKEND_ROOT / "tests" / "test_data"
 
 # Environment variable name for configuring the historical data directory
 DATA_DIR_ENV_VAR = "HISTORICAL_DATA_DIR"
+
+# Fixed representative coordinates for NYC weather.
+NYC_COORDS = (40.7823234, -73.9654161)
+
 
 def _resolve_data_path(test: bool = False) -> Path:
     """
@@ -68,6 +78,8 @@ def load_historical_data(test=False) -> pd.DataFrame:
     
     print("Cleaning data...")
     _df = _clean_data(_df)
+    print("Fetching weather data...")
+    _df = enrich_rides_with_weather(_df)
     print("Data loaded and cleaned successfully.")
     
     return _df
@@ -148,3 +160,87 @@ def _haversine_distance(lat1, lon1, lat2, lon2):
     c = 2 * asin(sqrt(a)) 
     R = 6371  # Radius of Earth in kilometers
     return c * R
+
+
+def load_weather_data(min_ride_time: datetime, max_ride_time: datetime) -> dict[str, dict]:
+    """
+    Load hourly weather data once for the full ride time range.
+
+    The result is cached by inclusive start/end date range and keyed by hour string
+    in the format YYYY-MM-DDTHH:00.
+    """
+    global _weather_by_hour, _weather_range
+
+    start_date = min_ride_time.date().isoformat()
+    end_date = max_ride_time.date().isoformat()
+    requested_range = (start_date, end_date)
+
+    if _weather_by_hour is not None and _weather_range == requested_range:
+        return _weather_by_hour
+
+    response = requests.get(
+        "https://archive-api.open-meteo.com/v1/archive",
+        params={
+            "latitude": NYC_COORDS[0],
+            "longitude": NYC_COORDS[1],
+            "start_date": start_date,
+            "end_date": end_date,
+            "hourly": (
+                "temperature_2m,"
+                "precipitation,"
+                "weather_code,"
+                "wind_speed_10m"
+            ),
+            "timezone": "America/New_York",
+            "wind_speed_unit": "kmh",
+        },
+        timeout=(5, 120),
+    )
+    response.raise_for_status()
+    hourly = response.json()["hourly"]
+
+    _weather_by_hour = {}
+    for index, hour in enumerate(hourly["time"]):
+        weather_code = int(hourly["weather_code"][index])
+        weather = Weather(
+            time=datetime.fromisoformat(hour),
+            temperature=float(hourly["temperature_2m"][index]),
+            wind_speed=float(hourly["wind_speed_10m"][index]),
+            precipitation=float(hourly["precipitation"][index]),
+            weather_code=weather_code,
+        )
+        _weather_by_hour[hour] = weather.model_dump()
+
+    _weather_range = requested_range
+    return _weather_by_hour
+
+
+def enrich_rides_with_weather(df: pd.DataFrame) -> pd.DataFrame:
+    """Attach cached hourly weather data directly to each ride in place."""
+    if df.empty or df["started_at"].dropna().empty:
+        df["weather"] = None
+        print("Weather enrichment skipped: no rides with valid start timestamps.")
+        return df
+
+    weather_by_hour = load_weather_data(
+        df["started_at"].min(),
+        df["started_at"].max(),
+    )
+    hour_keys = df["started_at"].dt.strftime("%Y-%m-%dT%H:00")
+    df["weather"] = hour_keys.map(weather_by_hour)
+
+    total_rides = len(df)
+    rides_with_weather = int(df["weather"].notna().sum())
+    missing_weather = total_rides - rides_with_weather
+
+    if missing_weather == 0:
+        print(f"Weather enrichment successful for all rides: {rides_with_weather}/{total_rides}.")
+    else:
+        missing_hours = sorted(hour_keys[df["weather"].isna()].unique().tolist())
+        sample_missing_hours = ", ".join(missing_hours[:5])
+        print(
+            f"Weather enrichment incomplete: {rides_with_weather}/{total_rides} rides enriched. "
+            f"Missing hours (up to 5 shown): {sample_missing_hours}"
+        )
+
+    return df

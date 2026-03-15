@@ -1,5 +1,7 @@
 from enum import Enum
 from datetime import datetime
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -22,6 +24,45 @@ class MemberCasual(str, Enum):
     MEMBER = "member"
     CASUAL = "casual"
 
+# Mapping of WMO weather codes to human-readable descriptions
+_WMO: dict[int, str] = {
+    0:  "Clear sky",
+    1:  "Mainly clear",
+    2:  "Partly cloudy",
+    3:  "Overcast",
+    45: "Fog",
+    48: "Depositing rime fog",
+    51: "Light drizzle",
+    53: "Moderate drizzle",
+    55: "Dense drizzle",
+    56: "Light freezing drizzle",
+    57: "Heavy freezing drizzle",
+    61: "Slight rain",
+    63: "Moderate rain",
+    65: "Heavy rain",
+    66: "Light freezing rain",
+    67: "Heavy freezing rain",
+    71: "Slight snow",
+    73: "Moderate snow",
+    75: "Heavy snow",
+    77: "Snow grains",
+    80: "Slight rain showers",
+    81: "Moderate rain showers",
+    82: "Violent rain showers",
+    85: "Slight snow showers",
+    86: "Heavy snow showers",
+    95: "Thunderstorm",
+    96: "Thunderstorm with slight hail",
+    99: "Thunderstorm with heavy hail",
+}
+    
+class Weather(BaseModel):
+    """Model representing hourly weather conditions for NYC."""
+    time: datetime  # Hourly timestamp (Eastern Time)
+    temperature: float  # Temperature at 2 m (C)
+    wind_speed: float  # Wind speed at 10 m (km/h)
+    precipitation: float  # Total precipitation in the hour (mm)
+    weather_code: int  # WMO weather interpretation code
 
 class Ride(BaseModel):
     ride_id: str
@@ -37,3 +78,4 @@ class Ride(BaseModel):
     end_lat: float
     end_lng: float
     member_casual: MemberCasual
+    weather: Optional[Weather] = None # Considered weather at start
