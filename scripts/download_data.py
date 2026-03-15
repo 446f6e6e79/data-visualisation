@@ -13,6 +13,8 @@ import zipfile
 
 BASE_DATA_URL = "https://s3.amazonaws.com/tripdata/"
 DOWNLOAD_DIR = "data/"
+TRIP_DATA_DIR = os.path.join(DOWNLOAD_DIR, "trips")
+STATION_DATA_DIR = os.path.join(DOWNLOAD_DIR, "stations")
 
 # Filter files by date range (MUST BE IN THE FORMAT YYYYMM)
 DEFAULT_START_DATE = "202601"
@@ -184,14 +186,16 @@ def main():
 
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
-    # Step 1: Find all files in the S3 bucket
+    # Find all files in the S3 bucket
     files = find_files(BASE_DATA_URL)
 
-    # Step 2: Filter files by date range and dataset type
+    # Filter files by date range and dataset type
     filtered_files = filter_files(files, args.start_date, args.end_date, args.download_jc)
 
-    # Step 3: Download and extract the filtered files
+    # Download and extract the filtered files
     download_and_extract_files(filtered_files, BASE_DATA_URL, DOWNLOAD_DIR)
+
+    # TODO: download station data as well and save it
 
 if __name__ == "__main__":
     main()

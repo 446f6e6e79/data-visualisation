@@ -38,6 +38,7 @@ uvicorn main:app --host 127.0.0.1 --port 8000
 In a second terminal, run:
 
 ```bash
+cd src/backend
 pytest /tests/test_backend.py -q
 ```
 
