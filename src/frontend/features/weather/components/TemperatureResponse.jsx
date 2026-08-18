@@ -3,15 +3,16 @@ import useTemperatureResponseChart from '../hooks/useTemperatureResponseChart.js
 import { WEATHER_TEXT } from '../utils/weatherText.js'
 
 /**
- * Line chart of average rides per hour across temperature bins, one curve per
- * user type to contrast member and casual weather sensitivity.
- * @param {Array} series - One entry per user type: { userType, bins }
+ * Line chart of average rides per hour across temperature bins for the
+ * population selected in the global header.
+ * @param {Array} bins - Temperature bins from useTemperatureResponse
+ * @param {string|null} userType - Active header user type, or null for every rider
  * @param {boolean} loading - Whether data is loading
  * @param {Error|null} error - Fetch error
  * @param {Function} onRefetch - Callback to trigger a retry after error
  */
-export default function TemperatureResponse({ series, loading, error, onRefetch }) {
-    const { canvasRef, hasData } = useTemperatureResponseChart({ series })
+export default function TemperatureResponse({ bins, userType, loading, error, onRefetch }) {
+    const { canvasRef, hasData } = useTemperatureResponseChart({ bins, userType })
 
     return (
         <ChartFrame

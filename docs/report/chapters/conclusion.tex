@@ -1,0 +1,35 @@
+\section{Conclusion}\label{sec:conclusion}
+Beyond the technical decisions covered so far, delivering this project also depended on how effectively we worked as a team.
+This section reflects on that collaboration, the opportunities we would pursue next, and how well the final result met our original goals.
+
+\subsection{Collaboration}
+Building a full-stack project required organized teamwork through \emph{GitHub}.
+We used issues to track features, separate branches to work independently, and pull requests to review code before merging.
+This helped us catch bugs early and share responsibility across the team.
+
+Because almost every visualization changed multiple times, we focused on keeping our code maintainable.
+We wrote modular code, documented key interfaces, and continuously cleaned up our codebase.
+
+Finally, we automated our workflow using \emph{GitHub Actions}.
+On every pull request, the pipeline runs backend tests against a temporary \emph{PostgreSQL} database, checks the frontend code, and builds our \LaTeX{} documentation.
+
+\subsection{Future Work}
+Throughout the project, we identified several opportunities that would enhance the dashboard's usefulness and analytical depth.
+
+\paragraph{Actual Trip Routes}
+Because the dataset records only origin, destination, and duration, exact travel paths are unknown.
+GPS traces or routing engines would map trips onto the street network, transforming straight corridors into realistic cycling routes and enriching spatial visualizations.
+
+\paragraph{Station Availability History}
+As noted in Section~\ref{sec:backend}, dock occupancy is limited to live snapshots.
+Persisting this data over time would reveal availability patterns, showing when shortages occur, how long they last, and how effectively rebalancing responds.
+
+\paragraph{Demand Forecasting}
+The current dashboard is entirely descriptive.
+However, as our temporal and weather views demonstrate, ridership responds predictably to weather, time, and day.
+Adding a forecasting model to these features would predict station-level demand, moving the tool from descriptive analysis to operational planning.
+
+\subsection{Final Considerations}
+The project met its main goal.
+The interface highlights key patterns immediately, including weekday commutes, rain sensitivity, and differences between members and casual riders.
+Throughout the project, we chose clear, practical solutions over complex ones, creating a system that is easy to understand, maintain, and expand.
