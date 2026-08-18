@@ -6,7 +6,6 @@
 \RequirePackage{amssymb}
 \RequirePackage{amsmath}
 \RequirePackage{amsthm}
-\RequirePackage{graphicx}
 \RequirePackage{float}
 \RequirePackage{comment}
 \RequirePackage{caption}
@@ -25,10 +24,17 @@
 \RequirePackage{pgfplots}
 \RequirePackage{parskip}
 \RequirePackage{emptypage}
-\RequirePackage{svg}
 \RequirePackage{siunitx}
 \RequirePackage{fnpct}
 \RequirePackage{subcaption}
+
+% External reference links, defined once and reused across chapters
+\newcommand{\citibikeurl}{https://www.citibikenyc.com/system-data}
+\newcommand{\proposalurl}{https://github.com/davide-dona/nyc-bike-data-visualization/blob/main/docs/proposal/proposal.pdf}
+\newcommand{\technicalreporturl}{https://github.com/davide-dona/nyc-bike-data-visualization/blob/main/docs/technical-report/technical-report.pdf}
+\newcommand{\citibikeref}[1]{\href{\citibikeurl}{\underline{#1}}}
+\newcommand{\proposalref}[1]{\href{\proposalurl}{\underline{#1}}}
+\newcommand{\technicalreportref}[1]{\href{\technicalreporturl}{\underline{#1}}}
 
 % Command to get the current month name
 \newcommand{\MonthName}{
@@ -120,7 +126,7 @@
 
       \vspace{1.25cm}
 
-      \includesvg[width=0.7\textwidth]{../media/logo.svg}
+      \includegraphics[width=0.7\textwidth]{../media/logo.pdf}
 
       \vspace{1cm}
       \HHUGE\textbf{#1}

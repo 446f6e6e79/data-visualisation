@@ -1,0 +1,36 @@
+\section{Backend}\label{sec:backend}
+The backend exposes the pipeline's precomputed tables through a \emph{FastAPI} service.
+The intermediate \emph{Parquet} files are deleted post-ingestion, leaving \emph{PostgreSQL} as the single source of truth.
+
+Live station availability is the sole exception; it is fetched from the feed on each request behind a short-lived cache rather than being read from the database.
+
+\subsection{Live and Historical Data Reconciliation}
+
+The system reconciles discrepancies between the GBFS live feed and Citi Bike historical trip archives through three rules:
+\begin{itemize}
+    \item \textbf{Identifier Alignment:} All records are mapped to shared station identifiers (\texttt{short\_name}), resolving mismatches between the two sources.
+    \item \textbf{Operational Filtering:} Live and spatial views display only stations actively reporting as installed, renting, and returning.
+    All other stations are dropped from these results, even if they appear in historical archives.
+    However, unmatched stations are retained for citywide temporal and aggregate statistics that do not require map locations.
+    \item \textbf{Capacity Derivation:} We calculate station capacity dynamically using live dock counters to keep our availability ratios accurate.
+    This avoids reliance on static metadata, which can be missing or outdated, leaving capacity undefined for some stations.
+\end{itemize}
+
+\subsection{Storage Engine}
+
+Serving all of this data, live and historical alike, still comes down to a single engine choice for the database itself.
+While an embedded engine like \emph{DuckDB} could query raw files without a precomputation layer, \emph{PostgreSQL} proved to be the better fit for our serving layer:
+\begin{itemize}
+    \item \textbf{Concurrency and Scalability:} \emph{PostgreSQL} natively manages concurrent user requests, whereas embedded engines are single-process and risk bottlenecks under load.
+    \item \textbf{Point Query Performance:} Combined with our precomputed aggregates, the remaining query workloads consist of small lookups where indexed \emph{PostgreSQL} table access outperforms columnar file scans.
+    \item \textbf{Architectural Fit:} A persistent, shared database aligns better with our deployment architecture than running an embedded query engine.
+    \item \textbf{Engine Efficiency:} Because \emph{Polars} already powers our ingestion pipeline, introducing \emph{DuckDB} as a second analytical engine was unnecessary.
+\end{itemize}
+A related decision concerns bike lane shapes: as geographic data, they would normally call for a spatial database extension such as \emph{PostGIS}.
+Because we never query these shapes spatially, we store each one as plain text and parse it into coordinates in the backend before serving, keeping the storage free of heavy dependencies.
+
+\paragraph{Query Routing}
+Beyond the choice of engine, its precomputed tables are not all the same size.
+As described in Section~\ref{sec:data-pipeline}, the pipeline rolls up several redundant variants of each statistic at different time resolutions.
+The backend routes each request to the smallest variant able to answer it: a citywide yearly total, for instance, resolves straight from the monthly rollup rather than scanning the full hourly table.
+In this way, we trade a modest amount of extra storage for reduced scan volumes at query time.

@@ -21,7 +21,7 @@ export const WEATHER_TEXT = {
     },
     temperatureResponse: {
         title: 'Temperature response - avg rides per hour',
-        note: 'Lines track how hourly demand climbs with temperature for each rider group, showing different behaviour patterns between members and casual riders.',
+        note: 'The line tracks how hourly demand climbs with temperature for the riders selected in the global header.',
         emptyMessage: 'No temperature data available for this filter range.',
     },
     rainImpact: {

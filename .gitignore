@@ -23,6 +23,7 @@ src/start_station_heatmap.html
 *.cb
 *.synctex.gz
 *.fdb_latexmk
+svg-inkscape/
 
 //Frontend modules
 node_modules/
