@@ -1,8 +1,14 @@
 name: Docs Build
-# This workflow compiles the LaTeX documents in the docs directory whenever a pull
-#request targeting the main branch changes files in the docs directory or this
-#workflow file itself, and commits the refreshed PDFs onto the pull request branch.
+# This workflow compiles the LaTeX documents in the docs directory whenever changes 
+#are pushed to the main branch or when a pull request is opened targeting the main branch
+#but only if the changes affect files in the docs directory or this workflow file itself.
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+      - ".github/workflows/docs-build.yml"
   pull_request:
     branches:
       - main
@@ -11,11 +17,7 @@ on:
       - ".github/workflows/docs-build.yml"
 permissions:
   contents: write
-
-concurrency:
-  group: docs-build-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
+  
 jobs:
   build-docs:
     runs-on: ubuntu-latest
@@ -23,59 +25,31 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.head_ref }}
 
       - name: Compile proposal document
         uses: xu-cheng/latex-action@v3
-        env:
-          SOURCE_DATE_EPOCH: 1704067200
-          FORCE_SOURCE_DATE: 1
         with:
           root_file: proposal.tex
           working_directory: docs/proposal
 
       - name: Compile report document
         uses: xu-cheng/latex-action@v3
-        env:
-          SOURCE_DATE_EPOCH: 1704067200
-          FORCE_SOURCE_DATE: 1
         with:
           root_file: report.tex
           working_directory: docs/report
 
       - name: Compile technical report document
         uses: xu-cheng/latex-action@v3
-        env:
-          SOURCE_DATE_EPOCH: 1704067200
-          FORCE_SOURCE_DATE: 1
         with:
           root_file: technical-report.tex
           working_directory: docs/technical-report
-
-      - name: Move compiled PDFs to docs directory
-        run: |
-          mv docs/proposal/proposal.pdf docs/proposal.pdf
-          mv docs/report/report.pdf docs/report.pdf
-          mv docs/technical-report/technical-report.pdf docs/technical-report.pdf
-
-      - name: Upload compiled PDFs
-        uses: actions/upload-artifact@v4
-        with:
-          name: docs-pdfs
-          path: docs/*.pdf
-          retention-days: 30
-
-      - name: Commit PDFs to the pull request branch
-        if: github.event.pull_request.head.repo.full_name == github.repository
+      - name: Update PDF in repository
         run: |
           git config user.name "GitHub Actions"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/proposal.pdf docs/report.pdf docs/technical-report.pdf
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          git commit -m "Update compiled PDF documents"
-          git push origin HEAD:${{ github.head_ref }}
+          git add docs/proposal/proposal.pdf
+          git add docs/report/report.pdf
+          git add docs/technical-report/technical-report.pdf
+          git commit -m "Update compiled PDF documents" || echo "No changes to commit"
+          git push origin main
+

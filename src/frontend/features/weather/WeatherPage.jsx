@@ -23,7 +23,8 @@ function WeatherPage({ filters = {} }) {
         refetch: refetchRidgeline,
     } = useWeatherRidgelineStats(filters)
     const {
-        series: temperatureSeries,
+        bins: temperatureBins,
+        userType: temperatureUserType,
         loading: temperatureLoading,
         error: temperatureError,
         refetch: refetchTemperature,
@@ -62,7 +63,8 @@ function WeatherPage({ filters = {} }) {
 
                 <div className="weather-deepdive-grid">
                     <TemperatureResponse
-                        series={temperatureSeries}
+                        bins={temperatureBins}
+                        userType={temperatureUserType}
                         loading={temperatureLoading}
                         error={temperatureError}
                         onRefetch={refetchTemperature}
